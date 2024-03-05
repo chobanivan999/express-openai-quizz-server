@@ -123,15 +123,16 @@ app.get('/', (req, res) => {
 })
 
 app.get('/video', (req, res) => {
+  res.send(google_api_key);
     // Usage example
-    const youtubeVideoLink = 'https://www.youtube.com/watch?v=C4ve8Kjw9ZY';
-    var summary = "I am from Canada. I am 30 years old. I like football and music. I am happy to tell you about my skills. I have read your requirement and I noticed that I am appropriate to this project. I have rich experiences with website development using HTML, Javascript, PHP, ODOO, Laravel, VueJS, ExpressJS, ReactJS, Angular 9, Element UI, Bootstrap, Material UI, MongoDB, MySQL, Spring Boot, Django, Jquery. I promise I can finish your project in time with high quality. Hope your kind contact.";
-    generateQuiz(summary).then(quiz => {
-        res.send(quiz);
-    }).catch((error1) => {
-        console.error(error1);
-        res.send(error1);
-    })
+    // const youtubeVideoLink = 'https://www.youtube.com/watch?v=C4ve8Kjw9ZY';
+    // var summary = "I am from Canada. I am 30 years old. I like football and music. I am happy to tell you about my skills. I have read your requirement and I noticed that I am appropriate to this project. I have rich experiences with website development using HTML, Javascript, PHP, ODOO, Laravel, VueJS, ExpressJS, ReactJS, Angular 9, Element UI, Bootstrap, Material UI, MongoDB, MySQL, Spring Boot, Django, Jquery. I promise I can finish your project in time with high quality. Hope your kind contact.";
+    // generateQuiz(summary).then(quiz => {
+    //     res.send(quiz);
+    // }).catch((error1) => {
+    //     console.error(error1);
+    //     res.send(error1);
+    // })
 
     // Fetch video details and generate summary
     // fetchVideoDetails(youtubeVideoLink, google_api_key)
