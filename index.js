@@ -162,3 +162,6 @@ app.get('/video', (req, res) => {
 app.listen(8080, () => {
       console.log('server listening on port 8080')
 })
+
+// Export the Express API
+module.exports = app;
