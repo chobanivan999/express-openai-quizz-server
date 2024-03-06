@@ -94,30 +94,56 @@ async function fetchVideoDetails(videoId, apiKey) {
     return summary;
   }
 
-  async function generateQuiz(promptconent) {
-    
-    const response = await axios.post(
-        'https://api.openai.com/v1/chat/completions',
-        {
-            'model': 'gpt-3.5-turbo',
-            'messages': [
-                { 
-                    role: "system", 
-                    content: "Please generate 20 quizes surely. one question has 4 answer list and indicate one correct answer for every quiz. The result type should be exactly same with bellow json object type without order number string. {'quizList':[{'question':'question', options:['answer1','answer2','answer3','answer4'],'correct_answer':'answer'}]}"
-                },
-                {
-                    role: "user", 
-                    content: promptconent
-                }
-            ]
-        },
-        {
-          headers: {
-            'Authorization': `Bearer ${openAiApiKey}`
-          }
+async function generateQuiz(promptconent) {
+  
+  const response = await axios.post(
+      'https://api.openai.com/v1/chat/completions',
+      {
+          'model': 'gpt-3.5-turbo',
+          'messages': [
+              { 
+                  role: "system", 
+                  content: "Please generate 20 quizes surely. one question has 4 answer list and indicate one correct answer for every quiz. The result type should be exactly same with bellow json object type without order number string. please dont output string, output only JSON. This is exact JSON type: {'quizList':[{'question':'question', options:['answer1','answer2','answer3','answer4'],'correct_answer':'answer'}]}"
+              },
+              {
+                  role: "user", 
+                  content: promptconent
+              }
+          ]
+      },
+      {
+        headers: {
+          'Authorization': `Bearer ${openAiApiKey}`
         }
-    );
-    return response.data.choices[0]['message']['content'];
+      }
+  );
+  return response.data.choices[0]['message']['content'];
+}
+
+async function generateNotes(promptconent) {
+  
+  const response = await axios.post(
+      'https://api.openai.com/v1/chat/completions',
+      {
+          'model': 'gpt-3.5-turbo',
+          'messages': [
+              { 
+                  role: "system", 
+                  content: "Generate notes from the text."
+              },
+              {
+                  role: "user", 
+                  content: promptconent
+              }
+          ]
+      },
+      {
+        headers: {
+          'Authorization': `Bearer ${openAiApiKey}`
+        }
+      }
+  );
+  return response.data.choices[0]['message']['content'];
 }
 
 app.get('/', (req, res) => {
@@ -142,17 +168,66 @@ app.post("/parsefile", (req, res) => {
   });
 });
 
+app.post("/filenotes", (req, res) => {
+  if (!req.files && !req.files.quizfile) {
+      res.status(400);
+      res.end();
+  }
+
+  pdfParse(req.files.quizfile).then(result => {
+    var text = result.text.replace(/\n/gi, " ");
+    text = text.slice(0, 4096);
+    // res.send(text);
+    generateNotes(text).then(notes => {
+      res.send(notes);
+    }).catch((error1) => {
+      console.error(error1);
+      res.send(error1);
+    })
+  });
+});
+
 app.post('/video', (req, res) => {
   // Fetch video details and generate summary
   const youtubeVideoLink = req.body.videolink;
   var videoId = extractVideoId(youtubeVideoLink);
-  console.log(videoId);
   fetchVideoDetails(videoId, google_api_key)
   .then((videoDetails) => {
       var summary = generateSummary(videoDetails);
       summary = summary.replace(/\n/gi, "");
       generateQuiz(summary).then(quiz => {
           res.send(quiz);
+      }).catch((error1) => {
+          console.error(error1);
+          res.send(error1);
+      })
+  })
+  .catch((error) => {
+      console.error(error);
+      res.send(error);
+  });
+
+  // getVideoTranscriptFromYouTubeLink(youtubeVideoLink)
+  // .then(transcriptText => {
+  //     console.log(transcriptText);
+  //     res.send(transcriptText);
+  // })
+  // .catch(error => {
+  //     console.error(error);
+  // });
+})
+
+app.post('/videonotes', (req, res) => {
+  // Fetch video details and generate summary
+  const youtubeVideoLink = req.body.videolink;
+  var videoId = extractVideoId(youtubeVideoLink);
+  fetchVideoDetails(videoId, google_api_key)
+  .then((videoDetails) => {
+      var summary = generateSummary(videoDetails);
+      summary = summary.replace(/\n/gi, "");
+      // res.send(summary);
+      generateNotes(summary).then(notes => {
+          res.send(notes);
       }).catch((error1) => {
           console.error(error1);
           res.send(error1);
