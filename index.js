@@ -107,7 +107,7 @@ async function fetchVideoDetails(videoId, apiKey) {
                 },
                 {
                     role: "user", 
-                    content: "I am from Canada. I am 30 years old. I like football and music. I am happy to tell you about my skills. I have read your requirement and I noticed that I am appropriate to this project. I have rich experiences with website development using HTML, Javascript, PHP, ODOO, Laravel, VueJS, ExpressJS, ReactJS, Angular 9, Element UI, Bootstrap, Material UI, MongoDB, MySQL, Spring Boot, Django, Jquery. I promise I can finish your project in time with high quality. Hope your kind contact."
+                    content: promptconent
                 }
             ]
         },
@@ -117,7 +117,7 @@ async function fetchVideoDetails(videoId, apiKey) {
             }
         }
     );
-    return response.data.choices[0]['message']['content'];
+    return response.data.choices[0];
 }
 
 app.get('/', (req, res) => {
