@@ -112,12 +112,12 @@ async function fetchVideoDetails(videoId, apiKey) {
             ]
         },
         {
-            headers: {
-              'Authorization': `Bearer ${openAiApiKey}`
-            }
+          headers: {
+            'Authorization': `Bearer ${openAiApiKey}`
+          }
         }
     );
-    return response.data.choices[0];
+    return response.data.choices[0]['message']['content'];
 }
 
 app.get('/', (req, res) => {
