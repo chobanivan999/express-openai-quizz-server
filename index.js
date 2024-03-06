@@ -103,7 +103,7 @@ async function fetchVideoDetails(videoId, apiKey) {
             'messages': [
                 { 
                     role: "system", 
-                    content: "generate 20 quiz list. one question has 4 answer list and indicate one correct answer for every quiz. the result data type is json." 
+                    content: "generate 20 quiz list. one question has 4 answer list and indicate one correct answer for every quiz. The result json type should be exactly same with bellow type. data={'quizList':[{'question':'question', options:['answer1','answer2','answer3','answer4'],'correct_answer':'answer'}]}"
                 },
                 {
                     role: "user", 
