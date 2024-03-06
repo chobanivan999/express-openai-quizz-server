@@ -103,7 +103,7 @@ async function generateQuiz(promptconent) {
           'messages': [
               { 
                   role: "system", 
-                  content: "Please generate 20 quizes surely. one question has 4 answer list and indicate one correct answer for every quiz. The result type should be exactly same with bellow json object type without order number string. please dont output string, output only JSON. This is exact JSON type: {'quizList':[{'question':'question', options:['answer1','answer2','answer3','answer4'],'correct_answer':'answer'}]}"
+                  content: "Please generate 20 quizes surely. {'quizList':[{'question':'question', options:['answer1','answer2','answer3','answer4'],'correct_answer':'answer'}]}. The result type should be exactly same with json object type without order number string."
               },
               {
                   role: "user", 
